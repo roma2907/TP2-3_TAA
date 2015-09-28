@@ -1,7 +1,7 @@
 package domain;
-
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,21 +9,30 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="DEVELOPPER")
-public class Developper {
-
+@Table(name="PROJECT")
+public class Project {
+	
 	private Long id;
 	private String name;
-	private List<UserStory> userStories;
+	private List<Release> releases;
 	
 	@Id
 	@GeneratedValue
 	public Long getId() {
 		return id;
 	}
-
+	
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	@OneToMany(mappedBy="project",cascade=CascadeType.PERSIST)
+	public List<Release> getReleases() {
+		return releases;
+	}
+	
+	public void setReleases(List<Release> releases) {
+		this.releases = releases;
 	}
 
 	public String getName() {
@@ -32,14 +41,5 @@ public class Developper {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@OneToMany(mappedBy="developper")
-	public List<UserStory> getUserStories() {
-		return userStories;
-	}
-
-	public void setUserStories(List<UserStory> userStories) {
-		this.userStories = userStories;
 	}
 }
