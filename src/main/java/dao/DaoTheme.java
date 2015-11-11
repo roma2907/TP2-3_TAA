@@ -8,27 +8,29 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import domain.Project;
+import domain.Theme;
 
-public class DaoProject {
+public class DaoTheme {
+
 	private EntityManager em;
-
-	public DaoProject(EntityManager entityManager) {
-		em = entityManager;
+	
+	public DaoTheme(EntityManager pEm){
+		em=pEm;
 	}
-
-	public List<Project> findProjects() {
+	
+	public List<Theme> findThemes() {
 
 		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaQuery<Project> query = builder.createQuery(Project.class);
-		query.from(Project.class);
+		CriteriaQuery<Theme> query = builder.createQuery(Theme.class);
+		query.from(Theme.class);
 		return em.createQuery(query).getResultList();
 
 	}
 
-	public Project findProjectById(Long id) {
+	public Theme findThemeById(Long id) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaQuery<Project> query = builder.createQuery(Project.class);
-		Root<Project> root = query.from(Project.class);
+		CriteriaQuery<Theme> query = builder.createQuery(Theme.class);
+		Root<Theme> root = query.from(Theme.class);
 		query.where(builder.equal(root.get("id"), id));
 		return em.createQuery(query).getSingleResult();
 	}

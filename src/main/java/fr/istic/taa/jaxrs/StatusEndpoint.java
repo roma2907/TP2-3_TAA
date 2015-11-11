@@ -19,25 +19,32 @@ package fr.istic.taa.jaxrs;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.ws.rs.Consumes;
+import javax.persistence.EntityManager;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import dao.DaoProject;
+import dao.DaoTask;
+import dao.DaoTheme;
 import dao.SingletonManager;
 import domain.Project;
 import domain.Task;
+import domain.Theme;
 
 @Path("/status")
 public class StatusEndpoint {
 
-    private static final Logger logger = Logger.getLogger(StatusEndpoint.class.getName());
+    //private static final Logger logger = Logger.getLogger(StatusEndpoint.class.getName());
 
-    private DaoProject daoProject = new DaoProject(SingletonManager.getInstance().getManager());
+	private static final EntityManager em = SingletonManager.getInstance().getManager();
+	
+    private DaoTask daoTask = new DaoTask(em);
+    private DaoProject daoProject = new DaoProject(em);
+    private DaoTheme daoTheme = new DaoTheme(em);
     
     @GET
     public Response getStatus() {
@@ -46,32 +53,45 @@ public class StatusEndpoint {
     }
     
     @GET
-    @Path("/test")
-    public String helloWorld() {
-
-        return "hello";
-    }
-
-    @GET
-    @Path("/task")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Task getPerson() {
-    	Task p = new Task();
-    	p.setDescription("test");
-    	p.setId(12L);
-        return p;
-    }
-    
-    
-    @GET
     @Path("/projects")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Project> getProjects(){
     	return daoProject.findProjects();
     }
-
-  
     
-
+    @GET
+    @Path("/projects/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Project getProjectById(@PathParam("id")Long id){
+    	return daoProject.findProjectById(id);
+    }
+    
+    @GET
+    @Path("/tasks")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Task> getTasks(){
+    	return daoTask.findTasks();
+    }
+    
+    @GET
+    @Path("/tasks/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Task getTaskById(@PathParam("id")Long id){
+    	return daoTask.findTaskById(id);
+    }
+    
+    @GET
+    @Path("/themes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Theme> getThemes(){
+    	return daoTheme.findThemes();
+    }
+    
+    @GET
+    @Path("/themes/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Theme getThemeById(@PathParam("id")Long id){
+    	return daoTheme.findThemeById(id);
+    }
 }
 

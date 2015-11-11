@@ -7,28 +7,28 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import domain.Project;
+import domain.Task;
 
-public class DaoProject {
+public class DaoTask {
 	private EntityManager em;
 
-	public DaoProject(EntityManager entityManager) {
+	public DaoTask(EntityManager entityManager) {
 		em = entityManager;
 	}
 
-	public List<Project> findProjects() {
+	public List<Task> findTasks() {
 
 		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaQuery<Project> query = builder.createQuery(Project.class);
-		query.from(Project.class);
+		CriteriaQuery<Task> query = builder.createQuery(Task.class);
+		query.from(Task.class);
 		return em.createQuery(query).getResultList();
 
 	}
 
-	public Project findProjectById(Long id) {
+	public Task findTaskById(Long id) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaQuery<Project> query = builder.createQuery(Project.class);
-		Root<Project> root = query.from(Project.class);
+		CriteriaQuery<Task> query = builder.createQuery(Task.class);
+		Root<Task> root = query.from(Task.class);
 		query.where(builder.equal(root.get("id"), id));
 		return em.createQuery(query).getSingleResult();
 	}
